@@ -26,7 +26,12 @@ function ensurePath(path) {
                 return fs.mkdir(dirPath)
                     // check if dir has indeed been created because
                     // there's no exception on incorrect user-defined paths (?)...
-                    .then(() => fs.isDir(dirPath))
+                    .then(
+                        () => fs.isDir(dirPath),
+                        (err) => {
+                            throw new Error('Folder is already existing')
+                        }
+                    )
                     .then(isDir => {
                         if (!isDir) {
                             throw new Error('Invalid cacheLocation');
